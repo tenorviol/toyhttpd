@@ -37,6 +37,7 @@ public class ToyHttpdTest extends TestCase {
                 JSONObject json = new JSONObject();
                 json.put("method", req.getMethod());
                 json.put("uri", req.getUri());
+                json.put("version", req.getHttpVersion());
                 res.end(json.toString());
             }
         }).listen(9999);
@@ -46,6 +47,7 @@ public class ToyHttpdTest extends TestCase {
             JSONObject json = new JSONObject(result);
             assertEquals("GET", json.getString("method"));
             assertEquals("/foo?bar=fubar", json.getString("uri"));
+            assertEquals("1.1", json.getString("version"));
         } finally {
             httpd.close();
         }

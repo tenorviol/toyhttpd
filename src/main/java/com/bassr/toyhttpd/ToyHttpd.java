@@ -12,7 +12,7 @@ import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.RequestLine;
+import org.apache.http.ProtocolVersion;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultConnectionReuseStrategy;
 import org.apache.http.impl.DefaultHttpResponseFactory;
@@ -85,6 +85,7 @@ public abstract class ToyHttpd {
         HttpRequestHandlerRegistry registry = new HttpRequestHandlerRegistry();
         registry.register("*", new RequestHandler());
 
+        // NOTE: Using this deprecated api for android compatibility
         this.httpService = new HttpService(httpproc,
                 new DefaultConnectionReuseStrategy(),
                 new DefaultHttpResponseFactory());
@@ -210,6 +211,11 @@ public abstract class ToyHttpd {
 
         public String getUri() {
             return this.httpRequest.getRequestLine().getUri();
+        }
+
+        public String getHttpVersion() {
+            ProtocolVersion v = this.httpRequest.getRequestLine().getProtocolVersion();
+            return v.getMajor() + "." + v.getMinor();
         }
     }
 
