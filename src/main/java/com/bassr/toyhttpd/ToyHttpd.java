@@ -199,15 +199,17 @@ public abstract class ToyHttpd {
 
     public static class Request {
         private HttpRequest httpRequest;
-        private RequestLine requestLine;
 
         public Request(HttpRequest httpRequest) {
             this.httpRequest = httpRequest;
-            this.requestLine = httpRequest.getRequestLine();
         }
 
         public String getMethod() {
-            return this.requestLine.getMethod();
+            return this.httpRequest.getRequestLine().getMethod();
+        }
+
+        public String getUri() {
+            return this.httpRequest.getRequestLine().getUri();
         }
     }
 

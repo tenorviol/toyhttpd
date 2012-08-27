@@ -36,14 +36,16 @@ public class ToyHttpdTest extends TestCase {
             public void server(ToyHttpd.Request req, ToyHttpd.Response res) throws Exception {
                 JSONObject json = new JSONObject();
                 json.put("method", req.getMethod());
+                json.put("uri", req.getUri());
                 res.end(json.toString());
             }
         }).listen(9999);
 
         try {
-            String result = get("http://localhost:9999");
+            String result = get("http://localhost:9999/foo?bar=fubar");
             JSONObject json = new JSONObject(result);
             assertEquals("GET", json.getString("method"));
+            assertEquals("/foo?bar=fubar", json.getString("uri"));
         } finally {
             httpd.close();
         }
